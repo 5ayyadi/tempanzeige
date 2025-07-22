@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -16,5 +16,8 @@ EXPOSE 5000
 # Define environment variable
 ENV PYTHONUNBUFFERED=1
 
-# Run main.py when the container launches
+# Add support for running both main.py and the Telegram bot
+COPY app/bot /app/bot
+
+# Default command to run main.py
 CMD ["poetry", "run", "python", "main.py"]

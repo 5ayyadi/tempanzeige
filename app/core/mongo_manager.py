@@ -61,24 +61,3 @@ class MongoManager:
         collection = self.db['user_preferences']
         result = collection.delete_one({"user_id": user_id})
         return result.deleted_count
-
-# Example usage
-if __name__ == "__main__":
-    manager = MongoManager()
-    sample_data = {
-        "category": "example_category",
-        "category_id": 1,
-        "subcategory": "example_subcategory",
-        "subcategory_id": 2,
-        "state": "example_state",
-        "state_id": 3,
-        "city": "example_city",
-        "city_id": 4,
-        "timeframe": "2025-07-22",
-        "timeframe_timestamp": 1698000000,
-        "price_min": 100,
-        "price_max": 500
-    }
-    collection_name = "mongo_db"
-    inserted_id = manager.insert_document(collection_name, sample_data)
-    print(f"Inserted document ID: {inserted_id}")
