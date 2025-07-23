@@ -68,3 +68,10 @@ Pipfile.lock
 *.sqlite3 
 
 poetry-cheatsheet.md 
+
+# Poetry
+poetry.lock
+__pypackages__/
+
+# Trash Temp Files 
+tt.*
