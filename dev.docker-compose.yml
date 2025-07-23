@@ -1,0 +1,13 @@
+services:
+  mongo:
+    image: mongo:5.0
+    container_name: tempanzeige_mongo_dev
+    ports:
+      - "27017:27017"  # Using different port to avoid conflicts
+    volumes:
+      - mongo_dev_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=tempanzeige
+
+volumes:
+  mongo_dev_data:
