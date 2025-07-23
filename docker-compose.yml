@@ -14,7 +14,7 @@ services:
       - tempanzeige-network
 
   mongo:
-    image: mongo:7.0
+    image: mongo:5.0
     container_name: tempanzeige-mongo
     environment:
       MONGO_INITDB_DATABASE: tempanzeige
@@ -25,6 +25,8 @@ services:
     restart: unless-stopped
     networks:
       - tempanzeige-network
+
+    command: mongod --bind_ip_all --quiet
 
 volumes:
   mongo_data:
