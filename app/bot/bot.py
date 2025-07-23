@@ -1,8 +1,8 @@
 import os
 import logging
 import time
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
+from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from dotenv import load_dotenv
 
 # Configure logging
@@ -30,13 +30,10 @@ Please choose an option from the menu below:
     """
 
     keyboard = [
-        [
-            InlineKeyboardButton("🏠 Set Preferences", callback_data="set_preferences"),
-            InlineKeyboardButton("ℹ️ Help", callback_data="help")
-        ]
+        [KeyboardButton("🏠 Set Preferences"), KeyboardButton("ℹ️ Help")]
     ]
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
     await update.message.reply_text(welcome_text, reply_markup=reply_markup, parse_mode='Markdown')
 
 async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -48,34 +45,25 @@ Choose an option:
     """
 
     keyboard = [
-        [
-            InlineKeyboardButton("🏠 Set Preferences", callback_data="set_preferences"),
-            InlineKeyboardButton("ℹ️ Help", callback_data="help")
-        ]
+        [KeyboardButton("🏠 Set Preferences"), KeyboardButton("ℹ️ Help")]
     ]
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+    await update.message.reply_text(menu_text, reply_markup=reply_markup, parse_mode='Markdown')
 
-    if update.callback_query:
-        await update.callback_query.edit_message_text(menu_text, reply_markup=reply_markup, parse_mode='Markdown')
-    else:
-        await update.message.reply_text(menu_text, reply_markup=reply_markup, parse_mode='Markdown')
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle text messages from users."""
+    message_text = update.message.text
 
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Echo the user message back to them."""
-    await update.message.reply_text(update.message.text)
-
-async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle button presses."""
-    query = update.callback_query
-    await query.answer()
-
-    if query.data == "set_preferences":
+    if message_text == "🏠 Set Preferences":
         await handle_set_preferences(update, context)
-    elif query.data == "help":
+    elif message_text == "ℹ️ Help":
         await handle_help(update, context)
-    elif query.data == "back_to_menu":
+    elif message_text == "🔙 Back to Menu":
         await main_menu(update, context)
+    else:
+        # Echo other messages
+        await update.message.reply_text(f"You said: {message_text}")
 
 async def handle_set_preferences(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle set preferences button."""
@@ -92,10 +80,10 @@ Here you can configure your temperature monitoring preferences:
 *This feature is coming soon!*
     """
 
-    keyboard = [[InlineKeyboardButton("🔙 Back to Menu", callback_data="back_to_menu")]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    keyboard = [[KeyboardButton("🔙 Back to Menu")]]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
-    await update.callback_query.edit_message_text(text, reply_markup=reply_markup, parse_mode='Markdown')
+    await update.message.reply_text(text, reply_markup=reply_markup, parse_mode='Markdown')
 
 async def handle_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle help button."""
@@ -117,10 +105,10 @@ async def handle_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 Contact support or check our documentation.
     """
 
-    keyboard = [[InlineKeyboardButton("🔙 Back to Menu", callback_data="back_to_menu")]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    keyboard = [[KeyboardButton("🔙 Back to Menu")]]
+    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
-    await update.callback_query.edit_message_text(text, reply_markup=reply_markup, parse_mode='Markdown')
+    await update.message.reply_text(text, reply_markup=reply_markup, parse_mode='Markdown')
 
 def run_bot():
     """Run the bot with error handling and retry logic."""
@@ -138,11 +126,8 @@ def run_bot():
             app.add_handler(CommandHandler("menu", main_menu))
             app.add_handler(CommandHandler("help", handle_help))
 
-            # Callback query handler for button presses
-            app.add_handler(CallbackQueryHandler(button_handler))
-
-            # Message handler to echo messages
-            app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+            # Message handler for keyboard button presses and other text
+            app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
             logger.info("Bot is running...")
             app.run_polling()
