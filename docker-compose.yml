@@ -1,31 +1,36 @@
 services:
   app:
     build: .
-    ports:
-      - "5001:5000" # Changed host port to 5001 to avoid conflicts
-    volumes:
-      - .:/app
+    container_name: tempanzeige-app
     environment:
       - MONGO_URI=mongodb://mongo:27017
       - MONGO_DB_NAME=tempanzeige
     depends_on:
       - mongo
+    volumes:
+      - .env:/app/.env:ro
+    restart: unless-stopped
+    networks:
+      - tempanzeige-network
 
   mongo:
     image: mongo:5.0
-    container_name: mongo
-    ports:
-      - "27017:27017"
+    container_name: tempanzeige-mongo
+    environment:
+      MONGO_INITDB_DATABASE: tempanzeige
     volumes:
       - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    networks:
+      - tempanzeige-network
 
-  bot:
-    build: .
-    command: poetry run python bot/bot.py
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-    depends_on:
-      - mongo
+    command: mongod --bind_ip_all --quiet
 
 volumes:
   mongo_data:
+
+networks:
+  tempanzeige-network:
+    driver: bridge
