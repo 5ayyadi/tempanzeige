@@ -1,7 +1,16 @@
 import os
+import logging
+import time
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 from dotenv import load_dotenv
+
+# Configure logging
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
@@ -19,13 +28,31 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(update.message.text)
 
 def run_bot():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+    """Run the bot with error handling and retry logic."""
+    max_retries = 5
+    retry_delay = 10  # seconds
 
-    # Command handler for /start
-    app.add_handler(CommandHandler("start", start))
+    for attempt in range(max_retries):
+        try:
+            logger.info(f"Starting bot (attempt {attempt + 1}/{max_retries})...")
 
-    # Message handler to echo messages
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+            app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    print("Bot is running...")
-    app.run_polling()
+            # Command handler for /start
+            app.add_handler(CommandHandler("start", start))
+
+            # Message handler to echo messages
+            app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+
+            logger.info("Bot is running...")
+            app.run_polling()
+
+        except Exception as e:
+            logger.error(f"Bot crashed with error: {e}")
+            if attempt < max_retries - 1:
+                logger.info(f"Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+                retry_delay *= 2  # Exponential backoff
+            else:
+                logger.error("Max retries reached. Bot will exit.")
+                raise

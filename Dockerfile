@@ -1,23 +1,34 @@
-# Use an official Python runtime as a parent image
+# Use Python 3.10 slim image as base
 FROM python:3.10-slim
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir poetry && poetry install
-
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
-
-# Define environment variable
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Add support for running both main.py and the Telegram bot
-COPY app/bot /app/bot
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Default command to run main.py
-CMD ["poetry", "run", "python", "main.py"]
+# Copy requirements first for better Docker layer caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire project
+COPY . .
+
+# Create a non-root user for security
+RUN useradd --create-home --shell /bin/bash app
+RUN chown -R app:app /app
+USER app
+
+# Expose port (if your bot uses webhooks, adjust as needed)
+EXPOSE 8000
+
+# Command to run the application
+CMD ["python", "main.py"]
