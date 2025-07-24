@@ -17,3 +17,16 @@
 ## 4. Do not use emojis
 
 - Responses, code comments, documentation, or any output must **not** contain emojis.
+
+
+## 5. Use the latest syntaxes
+
+- Use the latest Docker Compose command syntax: docker compose (not docker-compose).
+
+- Use modern Python syntax and features. For example, use int | None = None instead of old Optional[int] from typing.
+
+- Avoid deprecated libraries, modules, or patterns.
+
+
+
+ Keep code simple and straightforward. No fancy code or overly verbose comments—only necessary, clear comments.

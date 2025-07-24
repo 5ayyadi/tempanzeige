@@ -1,0 +1,218 @@
+{
+    "Auto, Rad & Boot": {
+        "id": "c210",
+        "subcategories": {
+            "Autos": "c216",
+            "Autoteile & Reifen": "c223",
+            "Boote & Bootszubehör": "c211",
+            "Fahrräder & Zubehör": "c217",
+            "Motorräder & Motorroller": "c305",
+            "Motorradteile & Zubehör": "c306",
+            "Nutzfahrzeuge & Anhänger": "c276",
+            "Reparaturen & Dienstleistungen": "c280",
+            "Wohnwagen & -mobile": "c220",
+            "Weiteres Auto, Rad & Boot": "c241"
+        }
+    },
+    "Elektronik": {
+        "id": "c161",
+        "subcategories": {
+            "Audio & Hifi": "c172",
+            "Dienstleistungen Elektronik": "c226",
+            "Foto": "c245",
+            "Handy & Telefon": "c173",
+            "Haushaltsgeräte": "c176",
+            "Konsolen": "c279",
+            "Notebooks": "c278",
+            "PCs": "c228",
+            "PC-Zubehör & Software": "c225",
+            "Tablets & Reader": "c285",
+            "TV & Video": "c175",
+            "Videospiele": "c227",
+            "Weitere Elektronik": "c168"
+        }
+    },
+    "Haus & Garten": {
+        "id": "c80",
+        "subcategories": {
+            "Badezimmer": "c91",
+            "Büro": "c93",
+            "Dekoration": "c246",
+            "Dienstleistungen Haus & Garten": "c239",
+            "Gartenzubehör & Pflanzen": "c89",
+            "Heimtextilien": "c90",
+            "Heimwerken": "c84",
+            "Küche & Esszimmer": "c86",
+            "Lampen & Licht": "c82",
+            "Schlafzimmer": "c81",
+            "Wohnzimmer": "c88",
+            "Weiteres Haus & Garten": "c87"
+        }
+    },
+    "Jobs": {
+        "id": "c102",
+        "subcategories": {
+            "Ausbildung": "c118",
+            "Bau, Handwerk & Produktion": "c111",
+            "Büroarbeit & Verwaltung": "c114",
+            "Gastronomie & Tourismus": "c110",
+            "Kundenservice & Call Center": "c105",
+            "Mini- & Nebenjobs": "c107",
+            "Praktika": "c125",
+            "Sozialer Sektor & Pflege": "c123",
+            "Transport, Logistik & Verkehr": "c247",
+            "Vertrieb, Einkauf & Verkauf": "c117",
+            "Weitere Jobs": "c109"
+        }
+    },
+    "Nachbarschaftshilfe": {
+        "id": "c400",
+        "subcategories": {
+            "Nachbarschaftshilfe": "c401"
+        }
+    },
+    "Dienstleistungen": {
+        "id": "c297",
+        "subcategories": {
+            "Altenpflege": "c288",
+            "Auto, Rad & Boot": "c289",
+            "Babysitter/-in & Kinderbetreuung": "c290",
+            "Elektronik": "c293",
+            "Haus & Garten": "c291",
+            "Künstler/-in & Musiker/-in": "c292",
+            "Reise & Event": "c294",
+            "Tierbetreuung & Training": "c295",
+            "Umzug & Transport": "c296",
+            "Weitere Dienstleistungen": "c298"
+        }
+    },
+    "Familie, Kind & Baby": {
+        "id": "c17",
+        "subcategories": {
+            "Altenpflege": "c236",
+            "Baby- & Kinderkleidung": "c22",
+            "Baby- & Kinderschuhe": "c19",
+            "Baby-Ausstattung": "c258",
+            "Babyschalen & Kindersitze": "c21",
+            "Babysitter/-in & Kinderbetreuung": "c237",
+            "Kinderwagen & Buggys": "c25",
+            "Kinderzimmermöbel": "c20",
+            "Spielzeug": "c23",
+            "Weiteres Familie, Kind & Baby": "c18"
+        }
+    },
+    "Haustiere": {
+        "id": "c130",
+        "subcategories": {
+            "Fische": "c138",
+            "Hunde": "c134",
+            "Katzen": "c136",
+            "Kleintiere": "c132",
+            "Nutztiere": "c135",
+            "Pferde": "c139",
+            "Tierbetreuung & Training": "c133",
+            "Vermisste Tiere": "c283",
+            "Vögel": "c243",
+            "Zubehör": "c313"
+        }
+    },
+    "Mode & Beauty": {
+        "id": "c153",
+        "subcategories": {
+            "Beauty & Gesundheit": "c224",
+            "Damenbekleidung": "c154",
+            "Damenschuhe": "c159",
+            "Herrenbekleidung": "c160",
+            "Herrenschuhe": "c158",
+            "Taschen & Accessoires": "c156",
+            "Uhren & Schmuck": "c157",
+            "Weiteres Mode & Beauty": "c155"
+        }
+    },
+    "Unterricht & Kurse": {
+        "id": "c235",
+        "subcategories": {
+            "Beauty & Gesundheit": "c269",
+            "Computerkurse": "c260",
+            "Esoterik & Spirituelles": "c265",
+            "Kochen & Backen": "c263",
+            "Kunst & Gestaltung": "c264",
+            "Musik & Gesang": "c262",
+            "Nachhilfe": "c268",
+            "Sportkurse": "c261",
+            "Sprachkurse": "c271",
+            "Tanzkurse": "c267",
+            "Weiterbildung": "c266",
+            "Weitere Unterricht & Kurse": "c270"
+        }
+    },
+    "Eintrittskarten & Tickets": {
+        "id": "c231",
+        "subcategories": {
+            "Bahn & ÖPNV": "c286",
+            "Comedy & Kabarett": "c254",
+            "Gutscheine": "c287",
+            "Kinder": "c252",
+            "Konzerte": "c255",
+            "Sport": "c257",
+            "Theater & Musical": "c251",
+            "Weitere Eintrittskarten & Tickets": "c256"
+        }
+    },
+    "Freizeit, Hobby & Nachbarschaft": {
+        "id": "c185",
+        "subcategories": {
+            "Esoterik & Spirituelles": "c232",
+            "Essen & Trinken": "c248",
+            "Freizeitaktivitäten": "c187",
+            "Handarbeit, Basteln & Kunsthandwerk": "c282",
+            "Kunst & Antiquitäten": "c240",
+            "Künstler/-in & Musiker/-in": "c191",
+            "Modellbau": "c249",
+            "Reise & Eventservices": "c233",
+            "Sammeln": "c234",
+            "Sport & Camping": "c230",
+            "Trödel": "c250",
+            "Verloren & Gefunden": "c189",
+            "Weiteres Freizeit, Hobby & Nachbarschaft": "c242"
+        }
+    },
+    "Immobilien": {
+        "id": "c195",
+        "subcategories": {
+            "Auf Zeit & WG": "c199",
+            "Container": "c402",
+            "Eigentumswohnungen": "c196",
+            "Ferien- & Auslandsimmobilien": "c275",
+            "Garagen & Stellplätze": "c197",
+            "Gewerbeimmobilien": "c277",
+            "Grundstücke & Gärten": "c207",
+            "Häuser zum Kauf": "c208",
+            "Häuser zur Miete": "c205",
+            "Mietwohnungen": "c203",
+            "Umzug & Transport": "c238",
+            "Weitere Immobilien": "c198"
+        }
+    },
+    "Musik, Filme & Bücher": {
+        "id": "c73",
+        "subcategories": {
+            "Bücher & Zeitschriften": "c76",
+            "Büro & Schreibwaren": "c281",
+            "Comics": "c284",
+            "Fachbücher, Schule & Studium": "c77",
+            "Film & DVD": "c79",
+            "Musik & CDs": "c78",
+            "Musikinstrumente": "c74",
+            "Weitere Musik, Filme & Bücher": "c75"
+        }
+    },
+    "Verschenken & Tauschen": {
+        "id": "c272",
+        "subcategories": {
+            "Tauschen": "c273",
+            "Verleihen": "c274",
+            "Verschenken": "c192"
+        }
+    }
+}
