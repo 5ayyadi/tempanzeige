@@ -1,4 +1,6 @@
 import os
+import logging
+import time
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ConversationHandler
 
 from dotenv import load_dotenv
@@ -12,7 +14,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Load environment variables
-
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -21,19 +22,27 @@ if not BOT_TOKEN:
     
 def run_bot():
     """Run the Telegram bot."""
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+    max_retries = 3
+    retry_delay = 5
 
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("start", start)],
-        states={
-            MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)],
-        },
-        fallbacks=[CommandHandler("cancel", cancel)],
-    )
+    for attempt in range(max_retries):
+        try:
+            logger.info(f"Starting bot (attempt {attempt + 1}/{max_retries})")
+            app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    app.add_handler(conv_handler)
+            conv_handler = ConversationHandler(
+                entry_points=[CommandHandler("start", start)],
+                states={
+                    MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)],
+                },
+                fallbacks=[CommandHandler("cancel", cancel)],
+            )
 
+            app.add_handler(conv_handler)
 
+            logger.info("Bot started successfully. Polling for updates...")
+            app.run_polling()
+            break  # If we get here, the bot ran successfully
 
         except Exception as e:
             logger.error(f"Bot crashed with error: {e}")
