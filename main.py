@@ -1,26 +1,18 @@
-import os
 import logging
-import time
-from dotenv import load_dotenv
-from app.core.mongo_client import MongoClientManager
-from app.bot.bot import run_bot
+
+from config import config
+from core.mongo_client import MongoClientManager
+from bot.bot import run_bot
 
 # Configure logging
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    format=config.LOG_FORMAT,
+    level=getattr(logging, config.LOG_LEVEL)
 )
 logger = logging.getLogger(__name__)
 
-load_dotenv()
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-
-logger = logging.getLogger(__name__)
+# Validate configuration
+config.validate()
 
 if __name__ == "__main__":
     logger.info("Starting Telegram bot application...")
@@ -32,7 +24,6 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Failed to initialize MongoDB: {e}")
         exit(1)
-
 
     # Start the Telegram bot
     try:

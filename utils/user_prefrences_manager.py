@@ -1,29 +1,19 @@
 import json
-import openai
-import os
+from pathlib import Path
 from rapidfuzz import process, fuzz
 from datetime import datetime, timedelta
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-
-# Hardcoded OpenAI API key (replace with your own later)
-openai.api_key = os.getenv('OPENAI_API')
-
-# OpenAI pricing for gpt-3.5-turbo (as of 2024): $0.50 per 1,000,000 tokens
-OPENAI_PRICE_PER_1M = 0.50
+from constants import DATA_DIR, CATEGORIES_FILE, CATEGORY_ID_FILE, CITIES_FILE, LOCATION_ID_FILE
 
 # Paths to data files
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
-CATEGORIES_PATH = os.path.join(DATA_DIR, "categories.json")
-CATEGORY_ID_PATH = os.path.join(DATA_DIR, "category_id.json")
-CITIES_PATH = os.path.join(DATA_DIR, "cities.json")
-LOCATION_ID_PATH = os.path.join(DATA_DIR, "location_id.json")
+data_path = Path(DATA_DIR)
+CATEGORIES_PATH = data_path / CATEGORIES_FILE
+CATEGORY_ID_PATH = data_path / CATEGORY_ID_FILE
+CITIES_PATH = data_path / CITIES_FILE
+LOCATION_ID_PATH = data_path / LOCATION_ID_FILE
 
-# Track OpenAI token usage
+# Token tracking (keeping for compatibility)
+OPENAI_PRICE_PER_1M = 0.50
 total_openai_tokens = 0
 
 
