@@ -75,3 +75,5 @@ __pypackages__/
 
 # Trash Temp Files 
 tt.*
+
+.github/    
