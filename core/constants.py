@@ -59,3 +59,30 @@ TIMEFRAME_OPTIONS = [
     "1 month",
     "3 months"
 ]
+
+# Preference confirmation actions
+ACTION_SAVE = "save"
+ACTION_EDIT_LOCATION = "edit_location"
+ACTION_EDIT_CATEGORY = "edit_category"
+ACTION_EDIT_PRICE = "edit_price"
+ACTION_EDIT_TIME = "edit_time"
+
+# Context keys for storing user state
+CTX_PREFERENCE_DRAFT = "preference_draft"
+CTX_AWAITING_INPUT = "awaiting_input"
+
+# Input types
+INPUT_LOCATION = "location"
+INPUT_CATEGORY = "category"
+INPUT_PRICE = "price"
+INPUT_TIME = "time"
+
+# Messages for preference flow
+MSG_PREFERENCE_FOUND = "I found the following search preferences:"
+MSG_CHOOSE_ACTION = "What would you like to do?"
+MSG_PREFERENCE_SAVED = "✅ Preference saved successfully!"
+MSG_ENTER_LOCATION = "📍 Please enter your city (e.g., 'Berlin', 'München'):"
+MSG_ENTER_PRICE = "💰 What's your price range? (e.g., 'max 50 EUR', 'verschenken', '10-100 EUR'):"
+MSG_ENTER_CATEGORY = "🏷️ What category are you looking for? (e.g., 'Wohnzimmer', 'Electronics', 'Büro'):"
+MSG_ENTER_TIME = "⏰ How long should I search? (e.g., '1 week', '3 days', '1 month'):"
+MSG_PROCESSING = "🔄 Processing your request..."

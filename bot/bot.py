@@ -1,9 +1,9 @@
 import logging
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ConversationHandler
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ConversationHandler
 
 from core.config import config
 from core.constants import MAIN_MENU
-from bot.handlers import start, main_menu, cancel
+from bot.handlers import start, main_menu, cancel, handle_callback_query
 
 # Configure logging
 logging.basicConfig(
@@ -25,15 +25,18 @@ def run_bot():
             logger.info(f"Starting bot (attempt {attempt + 1}/{max_retries})")
             app = ApplicationBuilder().token(config.BOT_TOKEN).build()
 
+            # Create conversation handler
             conv_handler = ConversationHandler(
                 entry_points=[CommandHandler("start", start)],
                 states={
-                    MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)],
+                    MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)]
                 },
-                fallbacks=[CommandHandler("cancel", cancel)],
+                fallbacks=[CommandHandler("cancel", cancel)]
             )
-
+            
+            # Add handlers
             app.add_handler(conv_handler)
+            app.add_handler(CallbackQueryHandler(handle_callback_query))
 
             logger.info("Bot started successfully. Polling for updates...")
             app.run_polling()

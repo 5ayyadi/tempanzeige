@@ -1,6 +1,6 @@
 """Keyboard layouts for the Telegram bot."""
 
-from telegram import ReplyKeyboardMarkup, KeyboardButton
+from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 from core.constants import MENU_ADD_PREFERENCE, MENU_VIEW_PREFERENCES, MENU_REMOVE_PREFERENCE
 
 def get_main_menu_keyboard():
@@ -11,3 +11,7 @@ def get_main_menu_keyboard():
         [KeyboardButton(MENU_REMOVE_PREFERENCE)]
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+
+def get_remove_keyboard():
+    """Get keyboard to remove custom keyboard."""
+    return ReplyKeyboardRemove()

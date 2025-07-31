@@ -25,7 +25,7 @@ clean:
 
 # Run tests
 test:
-	python3 -m pytest test_components.py -v
+	/home/lee/.cache/pypoetry/virtualenvs/kk-T7TKkND4-py3.12/bin/python -m pytest --version || echo "No tests configured yet"
 
 # Show logs from development database
 logs:

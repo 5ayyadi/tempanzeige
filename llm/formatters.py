@@ -38,3 +38,12 @@ def format_time_window(seconds: int) -> str:
         return "1 week"
     else:
         return f"{days} days"
+
+def format_preference_summary(location: Location, category: Category, price: Price, time_window: int) -> str:
+    """Format a complete preference summary for display."""
+    return (
+        f"📍 **Location:** {format_location(location)}\n"
+        f"🏷️ **Category:** {format_category(category)}\n"
+        f"💰 **Price:** {format_price(price)}\n"
+        f"⏰ **Time window:** {format_time_window(time_window)}"
+    )
