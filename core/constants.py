@@ -46,3 +46,16 @@ MSG_PREFERENCES_REMOVED = "All preferences removed successfully!"
 MSG_NO_PREFERENCES_TO_REMOVE = "No preferences found to remove."
 MSG_ERROR_GENERIC = "Sorry, there was an error processing your request. Please try again."
 MSG_INVALID_SELECTION = "Please select an option from the menu:"
+
+# Legacy OpenAI pricing constants (for compatibility)
+OPENAI_PRICE_PER_1M = 0.50
+
+# Timeframe options for user selection
+TIMEFRAME_OPTIONS = [
+    "1 day",
+    "3 days", 
+    "7 days",
+    "14 days",
+    "1 month",
+    "3 months"
+]

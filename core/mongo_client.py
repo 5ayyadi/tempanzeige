@@ -2,7 +2,7 @@ import logging
 from pymongo import MongoClient
 from bson import ObjectId
 
-from config import config
+from core.config import config
 from models.preferences import UserPreferences, Preference
 
 logger = logging.getLogger(__name__)

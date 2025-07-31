@@ -6,8 +6,8 @@ from pathlib import Path
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.schema import HumanMessage, SystemMessage
 
-from config import config
-from constants import DATA_DIR, CATEGORIES_FILE, CITIES_FILE
+from core.config import config
+from core.constants import DATA_DIR, CATEGORIES_FILE, CITIES_FILE
 from prompts.prompts import PREFERENCE_EXTRACTION_PROMPT
 
 logger = logging.getLogger(__name__)

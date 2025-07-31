@@ -1,8 +1,8 @@
 import logging
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ConversationHandler
 
-from config import config
-from constants import MAIN_MENU
+from core.config import config
+from core.constants import MAIN_MENU
 from bot.handlers import start, main_menu, cancel
 
 # Configure logging

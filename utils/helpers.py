@@ -1,7 +1,7 @@
 """Utility functions for the Telegram bot."""
 
 from datetime import datetime, timezone
-from constants import (
+from core.constants import (
     TIME_ONE_DAY, TIME_TWO_DAYS, TIME_THREE_DAYS, TIME_ONE_WEEK, 
     TIME_TWO_WEEKS, TIME_ONE_MONTH, DEFAULT_TIME_WINDOW
 )

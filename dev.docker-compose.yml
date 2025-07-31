@@ -1,6 +1,6 @@
 services:
   mongo:
-    image: mongo:5.0
+    image: mongo:latest
     container_name: tempanzeige_mongo_dev
     ports:
       - "27017:27017"  # Using different port to avoid conflicts

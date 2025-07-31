@@ -3,7 +3,10 @@ from pathlib import Path
 from rapidfuzz import process, fuzz
 from datetime import datetime, timedelta
 
-from constants import DATA_DIR, CATEGORIES_FILE, CATEGORY_ID_FILE, CITIES_FILE, LOCATION_ID_FILE
+from core.constants import (
+    DATA_DIR, CATEGORIES_FILE, CATEGORY_ID_FILE, CITIES_FILE, LOCATION_ID_FILE,
+    OPENAI_PRICE_PER_1M, TIMEFRAME_OPTIONS
+)
 
 # Paths to data files
 data_path = Path(DATA_DIR)
@@ -12,8 +15,7 @@ CATEGORY_ID_PATH = data_path / CATEGORY_ID_FILE
 CITIES_PATH = data_path / CITIES_FILE
 LOCATION_ID_PATH = data_path / LOCATION_ID_FILE
 
-# Token tracking (keeping for compatibility)
-OPENAI_PRICE_PER_1M = 0.50
+# Track OpenAI token usage
 total_openai_tokens = 0
 
 
@@ -138,17 +140,9 @@ def main():
     city_id_val = city_dict[city]
 
     # Step 5: Timeframe
-    timeframe_options = [
-        "1 day",
-        "3 days",
-        "7 days",
-        "14 days",
-        "1 month",
-        "3 months"
-    ]
     timeframe = ask_with_fuzzy(
         "For which timeframe do you want to see ads? (e.g., 1 day, 7 days, 1 month)",
-        timeframe_options
+        TIMEFRAME_OPTIONS
     )
     timeframe_timestamp = timeframe_to_timestamp(timeframe)
 

@@ -4,7 +4,7 @@ import logging
 from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import ContextTypes
 
-from constants import (
+from core.constants import (
     MAIN_MENU, MENU_ADD_PREFERENCE, MENU_VIEW_PREFERENCES, 
     MENU_REMOVE_PREFERENCE, MSG_WELCOME, MSG_HELP, MSG_CANCELLED,
     MSG_NO_PREFERENCES, MSG_PREFERENCES_REMOVED, MSG_NO_PREFERENCES_TO_REMOVE,

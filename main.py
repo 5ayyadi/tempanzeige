@@ -1,6 +1,6 @@
 import logging
 
-from config import config
+from core.config import config
 from core.mongo_client import MongoClientManager
 from bot.bot import run_bot
 
