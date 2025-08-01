@@ -38,17 +38,28 @@ ACTION_REFINE = "refine"
 ACTION_END = "end"
 
 # Messages
-MSG_WELCOME = "Welcome! I can help you save preferences for Kleinanzeigen searches."
+MSG_WELCOME = "**Welcome!** I can help you save preferences for Kleinanzeigen searches."
 MSG_HELP = "Use the menu to add, view, or remove your preferences."
 MSG_CANCELLED = "Operation cancelled. What would you like to do?"
-MSG_NO_PREFERENCES = "You don't have any saved preferences yet."
-MSG_PREFERENCES_REMOVED = "All preferences removed successfully!"
-MSG_NO_PREFERENCES_TO_REMOVE = "No preferences found to remove."
-MSG_ERROR_GENERIC = "Sorry, there was an error processing your request. Please try again."
+MSG_NO_PREFERENCES = "*You don't have any saved preferences yet.*"
+MSG_PREFERENCES_REMOVED = "✅ **All preferences removed successfully!**"
+MSG_NO_PREFERENCES_TO_REMOVE = "*No preferences found to remove.*"
+MSG_ERROR_GENERIC = "❌ Sorry, there was an error processing your request. Please try again."
 MSG_INVALID_SELECTION = "Please select an option from the menu:"
 
 # Legacy OpenAI pricing constants (for compatibility)
 OPENAI_PRICE_PER_1M = 0.50
+
+# Message formatting
+MSG_OFFER_TEMPLATE = """**{description}**
+
+📍 {address}
+📅 {date}
+
+🔗 [Mehr Details]({link})"""
+
+# Bot message sending
+TELEGRAM_MAX_MESSAGE_LENGTH = 4096
 
 # Timeframe options for user selection
 TIMEFRAME_OPTIONS = [
@@ -78,11 +89,12 @@ INPUT_PRICE = "price"
 INPUT_TIME = "time"
 
 # Messages for preference flow
-MSG_PREFERENCE_FOUND = "I found the following search preferences:"
-MSG_CHOOSE_ACTION = "What would you like to do?"
-MSG_PREFERENCE_SAVED = "✅ Preference saved successfully!"
+MSG_PREFERENCE_FOUND = "**I found the following search preferences:**"
+MSG_CHOOSE_ACTION = "__What would you like to do?__"
+MSG_PREFERENCE_SAVED = "✅ **Preference saved successfully!**"
 MSG_ENTER_LOCATION = "📍 Please enter your city (e.g., 'Berlin', 'München'):"
 MSG_ENTER_PRICE = "💰 What's your price range? (e.g., 'max 50 EUR', 'verschenken', '10-100 EUR'):"
 MSG_ENTER_CATEGORY = "🏷️ What category are you looking for? (e.g., 'Wohnzimmer', 'Electronics', 'Büro'):"
 MSG_ENTER_TIME = "⏰ How long should I search? (e.g., '1 week', '3 days', '1 month'):"
-MSG_PROCESSING = "🔄 Processing your request..."
+MSG_PROCESSING = "🔄 **Processing your request...**"
+MSG_TELL_ME_WHAT_LOOKING_FOR = "Tell me what you're looking for! 🔍\n\n*Example: 'Schreibtisch in München bis 50 Euro'*"

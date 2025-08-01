@@ -22,7 +22,8 @@ class Preference(BaseModel):
     category: Category
     price: Price = Price()
     time_window: int = 604800  # one week in seconds
-    created_at: datetime = Field(default_factory=datetime.now(tz=timezone.utc))
+    sent_offers: list[str] = []  # Track sent offer IDs
+    created_at: datetime = Field(default_factory=lambda: datetime.now(tz=timezone.utc))
 
 class UserModel(BaseModel):
     user_id: int

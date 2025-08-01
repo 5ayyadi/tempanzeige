@@ -99,3 +99,11 @@ class MongoClientManager:
         """Get all user preferences."""
         all_prefs = self.user_preferences_collection.find()
         return [UserPreferences(**prefs) for prefs in all_prefs]
+    
+    def mark_offer_as_sent(self, user_id: int, preference_id: str, offer_id: str) -> bool:
+        """Mark an offer as sent for a user's preference."""
+        result = self.user_preferences_collection.update_one(
+            {"user_id": user_id, "preferences._id": preference_id},
+            {"$addToSet": {"preferences.$.sent_offers": offer_id}}
+        )
+        return result.modified_count > 0

@@ -8,7 +8,8 @@ from core.constants import (
     MAIN_MENU, MENU_ADD_PREFERENCE, MENU_VIEW_PREFERENCES, MENU_REMOVE_PREFERENCE,
     MSG_WELCOME, MSG_HELP, MSG_NO_PREFERENCES, MSG_PREFERENCES_REMOVED, 
     MSG_NO_PREFERENCES_TO_REMOVE, MSG_PREFERENCE_SAVED, MSG_ENTER_LOCATION, 
-    MSG_ENTER_PRICE, MSG_ENTER_CATEGORY, MSG_ENTER_TIME, MSG_PROCESSING
+    MSG_ENTER_PRICE, MSG_ENTER_CATEGORY, MSG_ENTER_TIME, MSG_PROCESSING,
+    MSG_TELL_ME_WHAT_LOOKING_FOR
 )
 from core.mongo_client import MongoClientManager
 from llm.gemini_client import GeminiClient
@@ -24,7 +25,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Send a welcome message when the /start command is issued."""
     await update.message.reply_text(
         f"{MSG_WELCOME}\n{MSG_HELP}",
-        reply_markup=get_main_menu_keyboard()
+        reply_markup=get_main_menu_keyboard(),
+        parse_mode='Markdown'
     )
     return MAIN_MENU
 
@@ -34,9 +36,9 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if text == MENU_ADD_PREFERENCE:
         await update.message.reply_text(
-            "Tell me what you're looking for! 🔍\n\n"
-            "Example: 'Schreibtisch in München bis 50 Euro'",
-            reply_markup=get_remove_keyboard()
+            MSG_TELL_ME_WHAT_LOOKING_FOR,
+            reply_markup=get_remove_keyboard(),
+            parse_mode='Markdown'
         )
         context.user_data.pop("preference_draft", None)
         context.user_data.pop("awaiting_input", None)
@@ -131,7 +133,7 @@ async def show_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE, 
     ]
     
     await update.message.reply_text(
-        f"I found the following preferences:\n\n{summary}\n\nWhat would you like to do?",
+        f"**I found the following preferences:**\n\n{summary}\n\n__What would you like to do?__",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode='Markdown'
     )
@@ -323,26 +325,26 @@ async def show_user_preferences(update: Update, context: ContextTypes.DEFAULT_TY
     user_prefs = mongo_client.get_user_preferences(user_id)
     
     if not user_prefs or not user_prefs.preferences:
-        await update.message.reply_text(MSG_NO_PREFERENCES)
+        await update.message.reply_text(MSG_NO_PREFERENCES, parse_mode='Markdown')
         return
     
-    prefs_text = "Your saved preferences:\n\n"
+    prefs_text = "**Your saved preferences:**\n\n"
     for i, pref in enumerate(user_prefs.preferences, 1):
         location_text = format_location(pref.location)
         category_text = format_category(pref.category)
         price_text = format_price(pref.price)
-        prefs_text += f"{i}. {location_text} | {category_text} | {price_text}\n"
+        prefs_text += f"`{i}.` {location_text} | {category_text} | {price_text}\n"
     
-    await update.message.reply_text(prefs_text)
+    await update.message.reply_text(prefs_text, parse_mode='Markdown')
 
 async def remove_user_preferences(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Remove all user preferences."""
     user_id = update.effective_user.id
     
     if mongo_client.delete_all_user_preferences(user_id):
-        await update.message.reply_text(MSG_PREFERENCES_REMOVED)
+        await update.message.reply_text(MSG_PREFERENCES_REMOVED, parse_mode='Markdown')
     else:
-        await update.message.reply_text(MSG_NO_PREFERENCES_TO_REMOVE)
+        await update.message.reply_text(MSG_NO_PREFERENCES_TO_REMOVE, parse_mode='Markdown')
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Cancel the conversation."""
