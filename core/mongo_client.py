@@ -1,9 +1,11 @@
 import logging
 from pymongo import MongoClient
 from bson import ObjectId
+from pymongo.errors import BulkWriteError
 
 from core.config import config
 from models.preferences import UserPreferences, Preference
+from models.offer import Offer
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,7 @@ class MongoClientManager:
         self.client = MongoClient(self.mongo_uri)
         self.db = self.client[self.db_name]
         self.user_preferences_collection = self.db["user_preferences"]
+        self.offers_collection = self.db["offers"]
         logger.info("MongoDB connection established")
 
     def add_user_preference(self, user_id: int, preference: Preference) -> str:
@@ -69,3 +72,30 @@ class MongoClientManager:
         """Delete all preferences for a user."""
         result = self.user_preferences_collection.delete_one({"user_id": user_id})
         return result.deleted_count > 0
+
+    def create_offers(self, offers: list[dict] | None = None) -> list[str]:
+        """Create offers in the database."""
+        if not offers:
+            return []
+            
+        try:
+            result = self.offers_collection.insert_many(offers, ordered=False)
+            return [str(oid) for oid in result.inserted_ids]
+        except BulkWriteError as e:
+            logger.warning(f"Some offers already exist: {len(e.details.get('writeErrors', []))}")
+            return [str(oid) for oid in e.details.get('insertedIds', [])]
+
+    def get_offers(self, filter_criteria: dict) -> list[Offer]:
+        """Get offers based on filter criteria."""
+        offers_data = self.offers_collection.find(filter_criteria)
+        return [Offer(**offer) for offer in offers_data]
+
+    def get_existing_offer_ids(self, filter_criteria: dict) -> set[str]:
+        """Get existing offer IDs for given criteria."""
+        offers = self.offers_collection.find(filter_criteria, {"_id": 1})
+        return {offer["_id"] for offer in offers}
+
+    def get_all_user_preferences(self) -> list[UserPreferences]:
+        """Get all user preferences."""
+        all_prefs = self.user_preferences_collection.find()
+        return [UserPreferences(**prefs) for prefs in all_prefs]
