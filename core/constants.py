@@ -2,6 +2,7 @@
 
 # Bot states
 MAIN_MENU = "main_menu"
+PREFERENCES_MENU = "preferences_menu"
 
 # Time windows (in seconds)
 TIME_ONE_DAY = 86400
@@ -25,9 +26,11 @@ LOCATION_ID_FILE = "location_id.json"
 ZIPCODES_FILE = "zipcodes.json"
 
 # Menu options
+MENU_PREFERENCES = "Preferences"
 MENU_ADD_PREFERENCE = "Add Preference"
 MENU_VIEW_PREFERENCES = "View Preferences"
 MENU_REMOVE_PREFERENCE = "Remove Preference"
+MENU_BACK = "Back"
 
 # Graph actions
 ACTION_START = "start"

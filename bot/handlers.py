@@ -5,7 +5,7 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
 from core.constants import (
-    MAIN_MENU, MENU_ADD_PREFERENCE, MENU_VIEW_PREFERENCES, MENU_REMOVE_PREFERENCE,
+    MAIN_MENU, PREFERENCES_MENU, MENU_PREFERENCES, MENU_ADD_PREFERENCE, MENU_VIEW_PREFERENCES, MENU_REMOVE_PREFERENCE, MENU_BACK,
     MSG_WELCOME, MSG_HELP, MSG_NO_PREFERENCES, MSG_PREFERENCES_REMOVED, 
     MSG_NO_PREFERENCES_TO_REMOVE, MSG_PREFERENCE_SAVED, MSG_ENTER_LOCATION, 
     MSG_ENTER_PRICE, MSG_ENTER_CATEGORY, MSG_ENTER_TIME, MSG_PROCESSING,
@@ -15,7 +15,7 @@ from core.mongo_client import MongoClientManager
 from llm.gemini_client import GeminiClient
 from llm.formatters import format_location, format_category, format_price, format_time_window
 from models.preferences import Location, Category, Price, Preference
-from bot.keyboards import get_main_menu_keyboard, get_remove_keyboard
+from bot.keyboards import get_main_menu_keyboard, get_preferences_menu_keyboard, get_remove_keyboard
 
 logger = logging.getLogger(__name__)
 mongo_client = MongoClientManager()
@@ -31,7 +31,26 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return MAIN_MENU
 
 async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle main menu selection and preference flow."""
+    """Handle main menu selection."""
+    text = update.message.text
+    
+    if text == MENU_PREFERENCES:
+        await update.message.reply_text(
+            "**Preferences Menu**\n\nChoose an option:",
+            reply_markup=get_preferences_menu_keyboard(),
+            parse_mode='Markdown'
+        )
+        return PREFERENCES_MENU
+    
+    else:
+        await update.message.reply_text(
+            "Please select an option from the menu:",
+            reply_markup=get_main_menu_keyboard()
+        )
+        return MAIN_MENU
+
+async def preferences_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle preferences menu selection and preference flow."""
     text = update.message.text
     
     if text == MENU_ADD_PREFERENCE:
@@ -42,44 +61,52 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         context.user_data.pop("preference_draft", None)
         context.user_data.pop("awaiting_input", None)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     elif text == MENU_VIEW_PREFERENCES:
         await show_user_preferences(update, context)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     elif text == MENU_REMOVE_PREFERENCE:
         await remove_user_preferences(update, context)
+        return PREFERENCES_MENU
+    
+    elif text == MENU_BACK:
+        await update.message.reply_text(
+            f"{MSG_WELCOME}\n{MSG_HELP}",
+            reply_markup=get_main_menu_keyboard(),
+            parse_mode='Markdown'
+        )
         return MAIN_MENU
     
     # Handle preference input
     elif not context.user_data.get("awaiting_input"):
         await handle_preference_input(update, context)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     # Handle specific edits
     elif context.user_data.get("awaiting_input") == "location":
         await handle_location_edit(update, context)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     elif context.user_data.get("awaiting_input") == "price":
         await handle_price_edit(update, context)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     elif context.user_data.get("awaiting_input") == "category":
         await handle_category_edit(update, context)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     elif context.user_data.get("awaiting_input") == "time":
         await handle_time_edit(update, context)
-        return MAIN_MENU
+        return PREFERENCES_MENU
     
     else:
         await update.message.reply_text(
             "Please select an option from the menu:",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
-        return MAIN_MENU
+        return PREFERENCES_MENU
 
 async def handle_preference_input(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Process natural language preference input."""
@@ -104,7 +131,7 @@ async def handle_preference_input(update: Update, context: ContextTypes.DEFAULT_
         logger.error(f"Error processing input: {e}")
         await update.message.reply_text(
             "Sorry, I couldn't understand that. Please try again.",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
 
 async def show_confirmation(update: Update, context: ContextTypes.DEFAULT_TYPE, data: dict):
@@ -175,7 +202,7 @@ async def handle_callback_query(update: Update, context: ContextTypes.DEFAULT_TY
             await context.bot.send_message(
                 chat_id=update.effective_chat.id,
                 text="Sorry, something went wrong. Please try again.",
-                reply_markup=get_main_menu_keyboard()
+                reply_markup=get_preferences_menu_keyboard()
             )
 
 async def handle_location_edit(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -201,7 +228,7 @@ async def handle_location_edit(update: Update, context: ContextTypes.DEFAULT_TYP
         logger.error(f"Error updating location: {e}")
         await update.message.reply_text(
             "Sorry, couldn't understand that location. Please try again:",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
 
 async def handle_price_edit(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -227,7 +254,7 @@ async def handle_price_edit(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error updating price: {e}")
         await update.message.reply_text(
             "Sorry, couldn't understand that price. Please try again:",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
 
 async def handle_category_edit(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -253,7 +280,7 @@ async def handle_category_edit(update: Update, context: ContextTypes.DEFAULT_TYP
         logger.error(f"Error updating category: {e}")
         await update.message.reply_text(
             "Sorry, couldn't understand that category. Please try again:",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
 
 async def handle_time_edit(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -279,7 +306,7 @@ async def handle_time_edit(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error updating time: {e}")
         await update.message.reply_text(
             "Sorry, couldn't understand that time window. Please try again:",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
 
 async def save_preference(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -310,7 +337,7 @@ async def save_preference(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text="What would you like to do next?",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=get_preferences_menu_keyboard()
         )
         
     except Exception as e:
@@ -352,7 +379,8 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.pop("awaiting_input", None)
     
     await update.message.reply_text(
-        "Operation cancelled. What would you like to do?",
-        reply_markup=get_main_menu_keyboard()
+        f"{MSG_WELCOME}\n{MSG_HELP}",
+        reply_markup=get_main_menu_keyboard(),
+        parse_mode='Markdown'
     )
     return MAIN_MENU

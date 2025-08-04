@@ -2,8 +2,8 @@ import logging
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ConversationHandler
 
 from core.config import config
-from core.constants import MAIN_MENU
-from bot.handlers import start, main_menu, cancel, handle_callback_query
+from core.constants import MAIN_MENU, PREFERENCES_MENU
+from bot.handlers import start, main_menu, preferences_menu, cancel, handle_callback_query
 
 # Configure logging
 logging.basicConfig(
@@ -29,7 +29,8 @@ def run_bot():
             conv_handler = ConversationHandler(
                 entry_points=[CommandHandler("start", start)],
                 states={
-                    MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)]
+                    MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)],
+                    PREFERENCES_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, preferences_menu)]
                 },
                 fallbacks=[CommandHandler("cancel", cancel)]
             )
