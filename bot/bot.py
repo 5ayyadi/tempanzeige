@@ -14,7 +14,8 @@ logger = logging.getLogger(__name__)
 
 # Validate configuration
 config.validate()
-    
+
+
 def run_bot():
     """Run the Telegram bot."""
     max_retries = 3
@@ -30,11 +31,12 @@ def run_bot():
                 entry_points=[CommandHandler("start", start)],
                 states={
                     MAIN_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, main_menu)],
-                    PREFERENCES_MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, preferences_menu)]
+                    PREFERENCES_MENU: [MessageHandler(
+                        filters.TEXT & ~filters.COMMAND, preferences_menu)]
                 },
                 fallbacks=[CommandHandler("cancel", cancel)]
             )
-            
+
             # Add handlers
             app.add_handler(conv_handler)
             app.add_handler(CallbackQueryHandler(handle_callback_query))

@@ -67,7 +67,7 @@ TELEGRAM_MAX_MESSAGE_LENGTH = 4096
 # Timeframe options for user selection
 TIMEFRAME_OPTIONS = [
     "1 day",
-    "3 days", 
+    "3 days",
     "7 days",
     "14 days",
     "1 month",
